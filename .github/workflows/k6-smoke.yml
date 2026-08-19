@@ -17,4 +17,4 @@ jobs:
       - name: Run service smoke test
         uses: grafana/run-k6-action@v1
         with:
-          path: practise.js
+          path: service.js
