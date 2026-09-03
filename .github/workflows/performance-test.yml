@@ -8,43 +8,81 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: performance-multi-agent
-
     steps:
 
+      # ==========================================
+      # Checkout
+      # ==========================================
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # ==========================================
+      # Debug Repository Structure
+      # ==========================================
+      - name: Check Repository Structure
+        run: |
+          echo "Current Directory:"
+          pwd
+
+          echo "Repository Files:"
+          ls -la
+
+          echo "Recursive Directory Structure:"
+          find . -maxdepth 3 -type d
+
+      # ==========================================
+      # Setup Python
+      # ==========================================
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # ==========================================
+      # Install Dependencies
+      # ==========================================
       - name: Install Python Dependencies
+        working-directory: ./performance-multi-agent
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # ==========================================
+      # Download Copilot Runtime
+      # ==========================================
       - name: Download Copilot Runtime
+        working-directory: ./performance-multi-agent
         run: |
           python -m copilot download-runtime
 
+      # ==========================================
+      # Install k6
+      # ==========================================
       - name: Install k6
         uses: grafana/setup-k6-action@v1
 
+      # ==========================================
+      # Verify Environment
+      # ==========================================
       - name: Verify Environment
+        working-directory: ./performance-multi-agent
         run: |
           python --version
           k6 version
 
+      # ==========================================
+      # Run Multi-Agent Performance Test
+      # ==========================================
       - name: Run AI Multi-Agent Performance Test
+        working-directory: ./performance-multi-agent
         run: |
           python main.py
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
 
+      # ==========================================
+      # Upload Results
+      # ==========================================
       - name: Upload Performance Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -54,4 +92,5 @@ jobs:
             performance-multi-agent/results/
             performance-multi-agent/reports/
             performance-multi-agent/k6/generated_test.js
+          if-no-files-found: warn
           retention-days: 7
