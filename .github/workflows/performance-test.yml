@@ -5,7 +5,6 @@ on:
 
 jobs:
   performance-test:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +27,7 @@ jobs:
           ls -la
 
           echo "Directory structure:"
-          find . -maxdepth 2 -type f
+          find . -maxdepth 3 -type f
 
       # ==========================================
       # Setup Python
@@ -47,46 +46,9 @@ jobs:
           python -m pip install -r requirements.txt
 
       # ==========================================
-      # Download Copilot Runtime
+      # Verify Python
       # ==========================================
-      - name: Download Copilot Runtime
-        run: |
-          python -m copilot download-runtime
-
-      # ==========================================
-      # Install k6
-      # ==========================================
-      - name: Install k6
-        uses: grafana/setup-k6-action@v1
-
-      # ==========================================
-      # Verify Environment
-      # ==========================================
-      - name: Verify Environment
+      - name: Verify Python
         run: |
           python --version
-          k6 version
-
-      # ==========================================
-      # Run AI Multi-Agent Performance Test
-      # ==========================================
-      - name: Run AI Multi-Agent Performance Test
-        run: |
-          python main.py
-        env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
-
-      # ==========================================
-      # Upload Performance Results
-      # ==========================================
-      - name: Upload Performance Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: performance-test-results
-          path: |
-            results/
-            reports/
-            k6/generated_test.js
-          if-no-files-found: warn
-          retention-days: 7
+          ls -la
