@@ -9,28 +9,46 @@ jobs:
 
     steps:
 
+      # ==========================================
+      # Checkout Repository
+      # ==========================================
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Show Repository Structure
+      # ==========================================
+      # Check Repository Structure
+      # ==========================================
+      - name: Check Repository Structure
         run: |
+          echo "Current directory:"
           pwd
+
+          echo "Files:"
           ls -la
+
+          echo "Directory structure:"
           find . -maxdepth 3 -type f
 
+      # ==========================================
+      # Setup Python
+      # ==========================================
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # ==========================================
+      # Install Python Dependencies
+      # ==========================================
       - name: Install Python Dependencies
-        working-directory: performance-multi-agent
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      # ==========================================
+      # Verify Python
+      # ==========================================
       - name: Verify Python
-        working-directory: performance-multi-agent
         run: |
           python --version
           ls -la
