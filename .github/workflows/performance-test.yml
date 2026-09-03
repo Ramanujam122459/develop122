@@ -8,15 +8,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Show Current Directory
+      - name: Show Repository Structure
         run: |
-          echo "PWD:"
           pwd
-          echo "FILES:"
           ls -la
+          find . -maxdepth 3 -type f
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -24,10 +24,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install Python Dependencies
+        working-directory: performance-multi-agent
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
       - name: Verify Python
+        working-directory: performance-multi-agent
         run: |
           python --version
+          ls -la
