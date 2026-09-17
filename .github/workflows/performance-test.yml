@@ -14,6 +14,8 @@ jobs:
       # ==========================================
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref: K6_scripts
 
       # ==========================================
       # Setup Python
@@ -52,8 +54,35 @@ jobs:
       - name: Verify Environment
         working-directory: ./performance-multi-agent-scenarioswise
         run: |
+          echo "=========================================="
+          echo "Python Version"
+          echo "=========================================="
           python --version
+
+          echo "=========================================="
+          echo "k6 Version"
+          echo "=========================================="
           k6 version
+
+          echo "=========================================="
+          echo "Current Directory"
+          echo "=========================================="
+          pwd
+
+          echo "=========================================="
+          echo "Project Files"
+          echo "=========================================="
+          ls -la
+
+          echo "=========================================="
+          echo "Checking test_config.json"
+          echo "=========================================="
+          ls -l test_config.json
+
+          echo "=========================================="
+          echo "Git Commit"
+          echo "=========================================="
+          git rev-parse HEAD
 
       # ==========================================
       # Run AI Multi-Agent Performance Test
