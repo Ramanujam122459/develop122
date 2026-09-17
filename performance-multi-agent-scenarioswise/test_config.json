@@ -1,0 +1,18 @@
+{
+    "scenario": "spike",
+
+    "target": {
+        "url": "https://test.k6.io",
+        "method": "GET"
+    },
+
+    "load_profile": {
+        "vus": 10,
+        "duration": "50s"
+    },
+
+    "thresholds": {
+        "p95": "800ms",
+        "error_rate": "1%"
+    }
+}
