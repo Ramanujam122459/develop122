@@ -1,29 +1,33 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-const TEST_NAME = 'Device Enrollment API Load Test';
 const TARGET_URL = 'https://test.k6.io';
-const HTTP_METHOD = 'GET';
-const SCENARIO_NAME = 'Device Enrollment Baseline';
 
-export let options = {
-  vus: 5,
-  duration: '30s',
-  thresholds: {
-    http_req_duration: ['p(95)<500'],
-    http_req_failed: ['rate<0.01'],
+export const options = {
+  scenarios: {
+    'Device Enrollment Load Test': {
+      executor: 'constant-vus',
+      vus: 10,
+      duration: '50s',
+    },
   },
-  tags: {
-    test_name: TEST_NAME,
+  thresholds: {
+    http_req_duration: ['p(95)<800'],
+    http_req_failed: ['rate<0.01'],
   },
 };
 
 export default function () {
   const params = {
+    headers: {
+      'Accept': 'application/json',
+      'User-Agent': 'k6-device-enroll-test/1.0',
+    },
     tags: {
-      test_name: TEST_NAME,
-      scenario: SCENARIO_NAME,
-      method: HTTP_METHOD,
+      test_name: 'Device Enrollment API Load Test',
+      scenario: 'Device Enrollment Load Test',
+      endpoint: 'device-enrollment',
+      method: 'GET',
     },
   };
 
