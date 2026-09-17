@@ -20,9 +20,9 @@ def main():
     requirement = """
     Perform a load test for a Device Enrollment API.
 
-    Use 5 virtual users for 30 seconds.
+    Use 10 virtual users for 50 seconds.
 
-    The P95 response time should be below 500ms.
+    The P95 response time should be below 800ms.
     Error rate should remain below 1%.
 
     Use https://test.k6.io as the target URL for this PoC.
